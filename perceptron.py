@@ -11,57 +11,74 @@ from random import choices
 
 # Criação da população 
 def createDataset(nrows, nvariables): 
-    return [choices(range(1,nrows),k=nrows) for _ in range(nvariables)]
+    return [[n/10 for n in choices(range(1,nrows),k=nvariables)] for _ in range(nrows)]
+
+# Criação dos valores das classificação
+def createClasses(nrows): 
+    return [random.choice([0,1]) for x in range(nrows)]
+
+# Criação dos valores dos pesos
+def createWeights(nvariables): 
+    return [n/10 for n in choices(range(1,5),k=nvariables)]
 
 #final_values = [1,0,1,0,1]
 #weights = [9,5]
 #population = createDataset(5,2)
 
-ite = []
-erro = []
-prob = []
+nr_interactions = []
+error_value = []
+prob_classe = []
 
-def interaçaoUtilizador(): 
+def userInteractions(): 
     print("Qual o número de iterações?")
-    ite = input()
+    nr_interactions = input()
     
     print("Qual a mínima alteração do erro?")
-    erro = input()
+    error_value = input()
 
     print("Qual a probabilidade para definir classes?")
-    prob = input()
+    prob_classe = input()
 
+population = [[0.3,0.7,0.1],[-0.6,0.3,0.2],[-0.1,-0.8,0.3],[0.1,-0.45,0.4]]
+classes = [1,0,0,1]
+weights = [0.8,-0.5,-0.1]
+def lossFunction(sum_per_observation, prob_classe): 
+    if(sum_per_observation > prob_classe): 
+        return 1 
+    else: 
+        return 0
 
-def basic_perceptron():
-    populacao = [[0.3,0.7,0.1],[-0.6,0.3,0.2],[-0.1,-0.8,0.3],[0.1,-0.45,0.4]]
-    final_values = [1,0,0,1]
-    weights = [0.8,-0.5,-0.1]
-    b = 0.5
-    for index in range(len(populacao)): 
-        print('index: '+ str(index))
-        
-        #print("STEP 1- peso atual: "+ str(weights[0]) + " - "+ str(weights[1]))
+def basic_perceptron(nr_iterations, p_classe):
+    predictions = [None] * len(population)
+    for index in range(nr_iterations): 
+
+        i = (index % len(population))
         soma_por_individuo = 0
-
-
-        for index_pesos in range(2): 
-            soma_por_individuo += populacao[index][index_pesos]*weights[index_pesos]
-        #print(soma_por_individuo)
+        for index_weight in range(2): 
+            soma_por_individuo += population[i][index_weight]*weights[index_weight]
         
-        classe = 0
+        classe = lossFunction(soma_por_individuo, p_classe)
 
-        if(soma_por_individuo > b): 
-            classe = 1 
-        else: 
-            classe = 0
-        #print(classe)
+        predictions[i] = classe
 
-        previsao = final_values[index] - classe
-        #print(previsao)
-        
-        if(final_values[index] != classe):
-            for index_pesos in range(len(weights)): 
-                #print("STEP 2- peso atual: "+ str(weights[index_pesos])+ " b: " +str(b) + " previsao: "+ str(previsao) + " pop: " + str(populacao[index][index_pesos]))
-                weights[index_pesos] = weights[index_pesos] + (b * previsao * populacao[index][index_pesos])
+        loss = classes[i] - classe
+        if(classes[i] != classe):
+            for ii in range(len(weights)): 
+                weights[ii] = weights[ii] + (p_classe * loss * population[i][ii])
                 
-        print(weights)
+        #print(weights)
+    return predictions
+
+def perceptronAccurancy(original, predictions): 
+    acc = str(1-sum([o - p for o, p in zip(original,predictions)])/len(original))
+    return f"A taxa de precisão do nosso algoritmo Perceptron é: {acc}"
+    
+population = createDataset(5,2)
+classes = createClasses(5)
+weights = createWeights(2)
+print(population)
+print(classes)
+print(weights)
+predictions = basic_perceptron(5,0.5)
+predictions
+perceptronAccurancy(classes, predictions)
