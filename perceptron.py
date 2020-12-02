@@ -15,7 +15,7 @@
 # gráfico
 # input nao funciona no visual code studio
 
-# Import Libraries
+# Importação das Libraries necessárias
 from random import choices, choice
 import random 
 
@@ -31,6 +31,10 @@ def createClasses(nrows):
 def createWeights(nvariables): 
     return [n/10 for n in choices(range(1,5),k=nvariables)]
 
+## Criação da função de interação com o utilizador
+# Selecionar o número de iterações pretendidos,
+# a mínima alteração do erro e a nossa probabilidade
+# para definir a classe que será usada nos cálculos seguintes
 def userInteractions(): 
     print("Qual o número de iterações?")
     nr_interactions = int(input())
@@ -43,12 +47,19 @@ def userInteractions():
     
     return [nr_interactions, error_value, prob_classe]
     
+# Criação da função que compara o nosso valor de observação com 0 
+# Retorna 1 se essse valor for maior que 0
+# Retorna 0 se esse valor for menor que 0
 def lossFunction(sum_per_observation, prob_classe): 
     if(sum_per_observation > prob_classe): 
         return 1 
     else: 
         return 0
 
+## Criação do nosso logatitmo base
+# A partir daqui realiza-se o cálculo de novos pesos
+# Realizam-se tantas iterações quantas selecionadas acima
+# Ao fim dessas iterações iremos ter os nossos pesos finais
 def basic_perceptron(nr_iterations, p_classe):
     predictions = [None] * len(population)
     for index in range(nr_iterations): 
@@ -70,13 +81,17 @@ def basic_perceptron(nr_iterations, p_classe):
         #print(weights)
     return predictions
 
+# Criação da função que calcula a taxa de precisão do nosso algoritmo
+# Compara o nosso valor original com a previsão
 def perceptronAccurancy(original, predictions): 
     acc = str(1-sum([o - p for o, p in zip(original,predictions)])/len(original))
     return f"A taxa de precisão do nosso algoritmo Perceptron é: {acc}"
 
+# Criação da função que reproduz o nosso gráfico
 def createGraph()
     print("1")
 
+# Criação da função geral que chama todas as nossas funções criadas
 def geral(): 
     #user inputs
     inputs = userInteractions() 
