@@ -6,10 +6,6 @@
     # função calculo da previsão 
 # função de criação do gráfico 
 
-# population = [[0.3,0.7,0.1],[-0.6,0.3,0.2],[-0.1,-0.8,0.3],[0.1,-0.45,0.4]]
-# classes = [1,0,0,1]
-# weights = [0.8,-0.5,-0.1]
-
 # TODO
 # confirmar que a função de accurancy está correcta
 # erro entre iterações 
@@ -53,8 +49,8 @@ def userInteractions():
 # Criação da função que compara o nosso valor de observação com 0 
 # Retorna 1 se essse valor for maior que 0
 # Retorna 0 se esse valor for menor que 0
-def lossFunction(sum_per_observation, prob_classe): 
-    if(sum_per_observation > prob_classe): 
+def lossFunction(sum_per_observation): 
+    if(sum_per_observation >= 0): 
         return 1 
     else: 
         return 0
@@ -63,7 +59,7 @@ def lossFunction(sum_per_observation, prob_classe):
 # A partir daqui realiza-se o cálculo de novos pesos
 # Realizam-se tantas iterações quantas selecionadas acima
 # Ao fim dessas iterações iremos ter os nossos pesos finais
-def perceptron(nr_iterations, p_classe):
+def perceptron(population, classes, weights, nr_iterations, p_classe):
     
     # Gráfico inicial 
     createGraph(0)
@@ -81,7 +77,7 @@ def perceptron(nr_iterations, p_classe):
             soma_por_individuo += population[i][index_weight]*weights[index_weight]
         
         # Escolher a classe através da função de perda
-        classe = lossFunction(soma_por_individuo, p_classe)
+        classe = lossFunction(soma_por_individuo)
 
         # Acrescentar à nossa lista de previsões
         predictions[i] = classe
@@ -151,7 +147,7 @@ def createGraph(iteration):
     plt.show()
 
 # Criação da função geral que chama todas as nossas funções criadas
-def geral(): 
+def main(): 
     #user inputs
     inputs = userInteractions() 
     nr_iterations = inputs[0]
@@ -163,12 +159,16 @@ def geral():
     #classes = createClasses(10)
     #weights = createWeights(2)
 
+    population = [[0.3,0.7],[-0.6,0.3],[-0.1,-0.8],[0.1,-0.45]]
+    classes = [1,0,0,1]
+    weights = [0.8,-0.5]
+
     #print(population)
     #print(classes)
     #print(weights)
     
     #perceptron
-    predictions = basic_perceptron(nr_iterations,prob_classe)
+    predictions = perceptron(population,classes,weights,nr_iterations,prob_classe)
     print(predictions)
 
     #print(predictions)
