@@ -10,20 +10,23 @@
 # classes = [1,0,0,1]
 # weights = [0.8,-0.5,-0.1]
 
-# fazer comentários no código
-# erro 
-# gráfico
+# TODO
+# confirmar que a função de accurancy está correcta
+# erro entre iterações 
+# gráfico (falta tornar dinâmico a forma como vai buscar os dados)
 # input nao funciona no visual code studio
 
 # Importação das Libraries necessárias
 from random import choices, choice
 import random 
+import numpy as np 
+import matplotlib.pyplot as plt
 
 # Criação da população 
 def createDataset(nrows, nvariables): 
     return [[n/10 for n in choices(range(1,nrows),k=nvariables)] for _ in range(nrows)]
 
-# Criação dos valores das classificação
+# Criação dos valores das classes 
 def createClasses(nrows): 
     return [random.choice([0,1]) for x in range(nrows)]
 
@@ -60,24 +63,39 @@ def lossFunction(sum_per_observation, prob_classe):
 # A partir daqui realiza-se o cálculo de novos pesos
 # Realizam-se tantas iterações quantas selecionadas acima
 # Ao fim dessas iterações iremos ter os nossos pesos finais
-def basic_perceptron(nr_iterations, p_classe):
+def perceptron(nr_iterations, p_classe):
+    
+    # Gráfico inicial 
+    createGraph(0)
+    
     predictions = [None] * len(population)
+    
+    # Loop pelo número de iterações que queremos executar
     for index in range(nr_iterations): 
 
         i = (index % len(population))
         soma_por_individuo = 0
+
+        # Cálculo dos pesos x valor das variávis
         for index_weight in range(2): 
             soma_por_individuo += population[i][index_weight]*weights[index_weight]
         
+        # Escolher a classe através da função de perda
         classe = lossFunction(soma_por_individuo, p_classe)
 
+        # Acrescentar à nossa lista de previsões
         predictions[i] = classe
 
+        # Diferença entre a nova previsão e a classe original
         loss = classes[i] - classe
+
+        # Se a classe prevista não for igual à original, é necessário ajustar os pesos
         if(classes[i] != classe):
             for ii in range(len(weights)): 
                 weights[ii] = weights[ii] + (p_classe * loss * population[i][ii])
-                
+
+        # Visualização do Perceptron a cada iteração       
+        createGraph(index + 1) 
         #print(weights)
     return predictions
 
@@ -88,8 +106,49 @@ def perceptronAccurancy(original, predictions):
     return f"A taxa de precisão do nosso algoritmo Perceptron é: {acc}"
 
 # Criação da função que reproduz o nosso gráfico
-def createGraph()
-    print("1")
+def createGraph(iteration):
+
+    print("")
+    print("****************************************************")
+    print("****************************************************")
+    print("                    ITERAÇÃO "+str(iteration))
+    print("****************************************************")
+    print("****************************************************")
+    print("")
+
+    data = np.array(population)
+    X, Y = data.T
+
+    # TODO
+    # Isto está martelado é preciso alterar para ficar dinâmico
+    X0=np.append(X[:1], X[3:4])
+    Y0=np.append(Y[:1], Y[3:4])
+    X1=np.append(X[1:2], X[2:3])
+    Y1=np.append(Y[1:2], Y[2:3])
+    
+    # Acrescentar os pontos da população ao gráfico
+    plt.scatter(X0, Y0, color='red', marker='o', label='Classe 0')
+    plt.scatter(X1, Y1, color='blue', marker='x', label='Classe 1')
+    
+    # Acrescentar labels e legenda ao gráfico
+    plt.xlabel('First Variable')
+    plt.ylabel('Second Variable')
+    plt.legend(loc='upper left')
+    
+    # Calcular o eixo dos x
+    xx=np.linspace(-0.5,0.5,num=5)
+    #print(xx)
+
+    # Calcular o eixo dos y com a função da recta baseada nos pesos ajustados
+    yy = -(weights[0] * xx) / weights[1]
+    #print(yy)
+
+    # Desenhar a recta no gráfico
+    plt.plot(xx, yy, 'k-')
+    
+    #plt.savefig('images/02_06.png', dpi=300)
+    # Mostrar o gráfico
+    plt.show()
 
 # Criação da função geral que chama todas as nossas funções criadas
 def geral(): 
@@ -100,14 +159,14 @@ def geral():
     prob_classe = inputs[2]
 
     #dataset creation
-    population = createDataset(10,2)
-    classes = createClasses(10)
-    weights = createWeights(2)
+    #population = createDataset(10,2)
+    #classes = createClasses(10)
+    #weights = createWeights(2)
 
     #print(population)
     #print(classes)
     #print(weights)
-
+    
     #perceptron
     predictions = basic_perceptron(nr_iterations,prob_classe)
     print(predictions)
