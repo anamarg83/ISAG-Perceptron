@@ -62,7 +62,7 @@ def lossFunction(sum_per_observation):
 def perceptron(population, classes, weights, nr_iterations, p_classe):
     
     # Gráfico inicial 
-    createGraph(0)
+    createGraph(0, population, weights)
     
     predictions = [None] * len(population)
     
@@ -91,7 +91,7 @@ def perceptron(population, classes, weights, nr_iterations, p_classe):
                 weights[ii] = weights[ii] + (p_classe * loss * population[i][ii])
 
         # Visualização do Perceptron a cada iteração       
-        createGraph(index + 1) 
+        createGraph(index + 1, population, weights) 
         #print(weights)
     return predictions
 
@@ -102,7 +102,7 @@ def perceptronAccurancy(original, predictions):
     return f"A taxa de precisão do nosso algoritmo Perceptron é: {acc}"
 
 # Criação da função que reproduz o nosso gráfico
-def createGraph(iteration):
+def createGraph(iteration, population, weights):
 
     print("")
     print("****************************************************")
