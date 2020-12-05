@@ -1,17 +1,3 @@
-# função criar dataset + criar os valores para as classes + criar weights 
-# função para interagir com o utilizador (numero de iterações + erro + valor da probabilidade de escolher a classes)
-# função do algoritmo 
-    # função calculo dos pesos 
-    # função calculo do erro 
-    # função calculo da previsão 
-# função de criação do gráfico 
-
-# TODO
-# confirmar que a função de accurancy está correcta
-# erro entre iterações 
-# gráfico (falta tornar dinâmico a forma como vai buscar os dados)
-# input nao funciona no visual code studio
-
 # Importação das Libraries necessárias
 from random import choices, choice
 import random 
@@ -22,7 +8,7 @@ import matplotlib.pyplot as plt
 def createDataset(nrows, nvariables): 
     return [[n/10 for n in choices(range(1,nrows),k=nvariables)] for _ in range(nrows)]
 
-# Criação dos valores das classes 
+# Criação dos valores das classificação
 def createClasses(nrows): 
     return [random.choice([0,1]) for x in range(nrows)]
 
@@ -35,21 +21,21 @@ def createWeights(nvariables):
 # a mínima alteração do erro e a nossa probabilidade
 # para definir a classe que será usada nos cálculos seguintes
 def userInteractions(): 
-    print("Qual o número de iterações?")
+    print("QUAL O NÚMERO DE ITERAÇÕES?")
     nr_interactions = int(input())
     
-    print("Qual a mínima alteração do erro?")
+    print("QUAL A MÍNIMA ALTERAÇÃO DO ERRO?")
     error_value = float(input())
 
-    print("Qual a probabilidade para definir classes?")
+    print("QUAL A PROBABILIDADE PARA DEFINIR CLASSES?")
     prob_classe = float(input())
     
     return [nr_interactions, error_value, prob_classe]
-    
+
 # Criação da função que compara o nosso valor de observação com 0 
 # Retorna 1 se essse valor for maior que 0
 # Retorna 0 se esse valor for menor que 0
-def lossFunction(sum_per_observation): 
+def classificationFunction(sum_per_observation): 
     if(sum_per_observation >= 0): 
         return 1 
     else: 
@@ -59,118 +45,124 @@ def lossFunction(sum_per_observation):
 # A partir daqui realiza-se o cálculo de novos pesos
 # Realizam-se tantas iterações quantas selecionadas acima
 # Ao fim dessas iterações iremos ter os nossos pesos finais
-def perceptron(population, classes, weights, nr_iterations, p_classe):
+def perceptron(population, classes, weights, iterations, p_classe, learning_rate, minimal_error):
     
-    # Gráfico inicial 
-    createGraph(0, population, weights)
+    # Mostrar estado inicial
+    createGraph(0)
     
     predictions = [None] * len(population)
-    
-    # Loop pelo número de iterações que queremos executar
-    for index in range(nr_iterations): 
 
-        i = (index % len(population))
-        soma_por_individuo = 0
+    # Percorrer o número de iterações definidas pelo utilizador
+    for index in range(iterations):
 
-        # Cálculo dos pesos x valor das variávis
-        for index_weight in range(2): 
-            soma_por_individuo += population[i][index_weight]*weights[index_weight]
-        
-        # Escolher a classe através da função de perda
-        classe = lossFunction(soma_por_individuo)
+        # Validar se o erro é inferior ao erro mínimo definido pelo utilizador
+        if errors[-1] > minimal_error:
 
-        # Acrescentar à nossa lista de previsões
-        predictions[i] = classe
+          for i in range(len(population)):
+            value_per_observation = 0
 
-        # Diferença entre a nova previsão e a classe original
-        loss = classes[i] - classe
+            # Cálculo dos pesos x valor das variávis
+            for index_weight in range(len(weights)): 
+              value_per_observation += population[i][index_weight]*weights[index_weight] + p_classe
+          
+            # Guardar o valor da nossa previsão
+            predictions[i] = classificationFunction(value_per_observation)
 
-        # Se a classe prevista não for igual à original, é necessário ajustar os pesos
-        if(classes[i] != classe):
-            for ii in range(len(weights)): 
-                weights[ii] = weights[ii] + (p_classe * loss * population[i][ii])
+            # Diferença entre a previsão e as classes originais
+            diff_between_prediction_original = classes[i] - predictions[i]
 
-        # Visualização do Perceptron a cada iteração       
-        createGraph(index + 1, population, weights) 
-        #print(weights)
+            # Ajuste de pesos se a classe prevista não for igual à original 
+            # Chegamos à conclusão que ajustar os pesos apenas quando a nossa previsão é diferente da original, 
+            # o algoritmo é mais eficaz do que quando ajustamos sempre os pesos
+            if classes[i] != predictions[i] :  
+              for ii in range(len(weights)): 
+                weights[ii] = weights[ii] + (learning_rate * diff_between_prediction_original * population[i][ii])
+          
+          # Cálculo dos erros
+          total_error = float(learning_rate) * float(errorFunction(classes, predictions))
+          errors.append(total_error) 
+        else: 
+          # Termina o algoritmo se atingiu o erro mínimo 
+          return predictions
+
     return predictions
+
+# Criação da função que calcula o erro do nosso algoritmo
+def errorFunction(original, predictions): 
+    acc = [p - o for o, p in zip(original,predictions)].count(0)/len(original)
+    return 1 - acc
 
 # Criação da função que calcula a taxa de precisão do nosso algoritmo
 # Compara o nosso valor original com a previsão
 def perceptronAccurancy(original, predictions): 
-    acc = str(1-sum([o - p for o, p in zip(original,predictions)])/len(original))
-    return f"A taxa de precisão do nosso algoritmo Perceptron é: {acc}"
+    print(original)
+    print(predictions)
+    acc = [o - p for o, p in zip(original,predictions)].count(0)/len(original)
+    return f"____________________________________________________\n\nA taxa de precisão do algoritmo Perceptron é: {acc}\n____________________________________________________\n"
 
 # Criação da função que reproduz o nosso gráfico
-def createGraph(iteration, population, weights):
-
-    print("")
-    print("****************************************************")
-    print("****************************************************")
-    print("                    ITERAÇÃO "+str(iteration))
-    print("****************************************************")
-    print("****************************************************")
-    print("")
+def createGraph(iteration):
 
     data = np.array(population)
     X, Y = data.T
 
-    # TODO
-    # Isto está martelado é preciso alterar para ficar dinâmico
-    X0=np.append(X[:1], X[3:4])
-    Y0=np.append(Y[:1], Y[3:4])
-    X1=np.append(X[1:2], X[2:3])
-    Y1=np.append(Y[1:2], Y[2:3])
+    X0 = [X[index] for index, c in enumerate(classes) if c == 0] # valores da primeira variavel da população com a classe = 0
+    Y0 = [Y[index] for index, c in enumerate(classes) if c == 0] # valores da segunda variavel da população com a classe = 0
+    X1 = [X[index] for index, c in enumerate(classes) if c == 1] # valores da primeira variavel da população com a classe = 1
+    Y1 = [Y[index] for index, c in enumerate(classes) if c == 1] # valores da segunda variavel da população com a classe = 1
     
-    # Acrescentar os pontos da população ao gráfico
+    # Criação do gráfico com os pontos
     plt.scatter(X0, Y0, color='red', marker='o', label='Classe 0')
     plt.scatter(X1, Y1, color='blue', marker='x', label='Classe 1')
     
-    # Acrescentar labels e legenda ao gráfico
-    plt.xlabel('First Variable')
-    plt.ylabel('Second Variable')
+    plt.title('Iteração nº ' + str(iteration))
+    plt.xlabel('Primeira Variável')
+    plt.ylabel('Segunda Variável')
     plt.legend(loc='upper left')
     
-    # Calcular o eixo dos x
+    # Calcular os valores do eixo X
     xx=np.linspace(-0.5,0.5,num=5)
-    #print(xx)
 
-    # Calcular o eixo dos y com a função da recta baseada nos pesos ajustados
+    # Calcular os valores do eixo Y com os pesos
     yy = -(weights[0] * xx) / weights[1]
-    #print(yy)
 
-    # Desenhar a recta no gráfico
     plt.plot(xx, yy, 'k-')
-    
-    #plt.savefig('images/02_06.png', dpi=300)
-    # Mostrar o gráfico
+    plt.grid()
     plt.show()
 
+
+# Criação da função que reproduz o nosso gráfico de erros ao longo das várias iterações
+def errorsGraph(errors, iterations): 
+  print(errors)   
+  plt.plot(errors)
+  plt.title('Erro ao longo das iterações')
+  plt.xlabel('Epoch')
+  plt.ylabel('Total Loss')
+  plt.grid()
+
 # Criação da função geral que chama todas as nossas funções criadas
-def main(): 
-    #user inputs
+def geral(): 
+    # Inputs do utilizador
     inputs = userInteractions() 
-    nr_iterations = inputs[0]
-    error_value = inputs[1]
+    iterations = inputs[0]
+    minimal_error = inputs[1]
     prob_classe = inputs[2]
 
-    #dataset creation
-    #population = createDataset(10,2)
-    #classes = createClasses(10)
-    #weights = createWeights(2)
-
-    population = [[0.3,0.7],[-0.6,0.3],[-0.1,-0.8],[0.1,-0.45]]
-    classes = [1,0,0,1]
-    weights = [0.8,-0.5]
-
-    #print(population)
-    #print(classes)
-    #print(weights)
+    # Dataset creation
+    population = createDataset(10,2)
+    classes = createClasses(10)
+    weights = createWeights(2)
     
-    #perceptron
-    predictions = perceptron(population,classes,weights,nr_iterations,prob_classe)
-    print(predictions)
+    learning_rate = 0.05
 
-    #print(predictions)
-    acc = perceptronAccurancy(classes, predictions)
-    print(acc)
+    # Algoritmo Perceptron
+    predictions = perceptron(population, classes, weights, iterations, prob_classe, learning_rate, minimal_error)
+    
+    createGraph(iterations) 
+
+    # Valor de precisão do nosso algoritmo
+    #acc = perceptronAccurancy(classes, predictions)
+    #print(acc)
+
+    # Gráfico dos erros
+    errorsGraph(errors, iterations)
