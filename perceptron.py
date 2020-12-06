@@ -4,6 +4,8 @@ import random
 import numpy as np 
 import matplotlib.pyplot as plt
 
+errors = [1]
+
 # Criação da população 
 def createDataset(nrows, nvariables): 
     return [[n/10 for n in choices(range(1,nrows),k=nvariables)] for _ in range(nrows)]
@@ -45,10 +47,10 @@ def classificationFunction(sum_per_observation):
 # A partir daqui realiza-se o cálculo de novos pesos
 # Realizam-se tantas iterações quantas selecionadas acima
 # Ao fim dessas iterações iremos ter os nossos pesos finais
-def perceptron(population, classes, weights, iterations, p_classe, learning_rate, minimal_error):
-    
+def perceptron(population, classes, weights, iterations, p_classe, learning_rate, minimal_error, errors = [1]):
+
     # Mostrar estado inicial
-    createGraph(0)
+    createGraph(0, population, classes, weights)
     
     predictions = [None] * len(population)
 
@@ -95,13 +97,11 @@ def errorFunction(original, predictions):
 # Criação da função que calcula a taxa de precisão do nosso algoritmo
 # Compara o nosso valor original com a previsão
 def perceptronAccurancy(original, predictions): 
-    print(original)
-    print(predictions)
     acc = [o - p for o, p in zip(original,predictions)].count(0)/len(original)
     return f"____________________________________________________\n\nA taxa de precisão do algoritmo Perceptron é: {acc}\n____________________________________________________\n"
 
 # Criação da função que reproduz o nosso gráfico
-def createGraph(iteration):
+def createGraph(iteration, population, classes, weights):
 
     data = np.array(population)
     X, Y = data.T
@@ -132,8 +132,7 @@ def createGraph(iteration):
 
 
 # Criação da função que reproduz o nosso gráfico de erros ao longo das várias iterações
-def errorsGraph(errors, iterations): 
-  print(errors)   
+def errorsGraph(errors): 
   plt.plot(errors)
   plt.title('Erro ao longo das iterações')
   plt.xlabel('Epoch')
@@ -156,13 +155,13 @@ def geral():
     learning_rate = 0.05
 
     # Algoritmo Perceptron
-    predictions = perceptron(population, classes, weights, iterations, prob_classe, learning_rate, minimal_error)
+    predictions = perceptron(population, classes, weights, iterations, prob_classe, learning_rate, minimal_error, errors)
     
-    createGraph(iterations) 
+    createGraph(iterations, population, classes, weights) 
 
     # Valor de precisão do nosso algoritmo
-    #acc = perceptronAccurancy(classes, predictions)
-    #print(acc)
+    acc = perceptronAccurancy(classes, predictions)
+    print(acc)
 
     # Gráfico dos erros
-    errorsGraph(errors, iterations)
+    errorsGraph(errors)
