@@ -45,6 +45,16 @@ Para a implementação deste algoritmo foram criadas as seguintes funções auxi
 | --- | --- | --- |
 | createDataset | Número de indivíduos da população e número de inputs/variáveis a considerar. Devolve uma lista de listas. | Função que gera aleatoriamente valores decimais entre 0 e o número de indivíduos. |
 | createClasses | Número de indivíduos da população. Devolve uma lista. | Função que gera as classes da população. Valores aleatórios entre 0 e 1. |
+|  createWeights | Número de variáveis/pesos. Devolve uma lista. | Função que gera aleatoriamente valores entre 0 e 1 numa lista. |
+| userInteractions | NA | Função que permite ao utilizador introduzir os valores relativos ao número de iterações do algoritmo, mínima alteração do erro entre iterações e o valor do parâmetro threshold/bias. | 
+| classificationFunction | Valor float. Devolve a classe 0 ou 1. | Função que permite classificar uma observação com base no valor previamente calculado do x1*w1 + x2*w2 + x3*w3 + ... + bias  | 
+| perceptron | Recebe vários argumentos para o algoritmo como o dataset, as classes originais, os pesos, o  bias, o número de iterações, learning rate e erro mínimo.a Devolve uma lista com as classificações previstas. | Função que contém a lógica principal do Perceptron, itera sobre o número de iterações pré definidas sobre toda a população, calcula os valores previstos e ajusta os pesos. | 
+| errorFunction | Duas listas. Devolve o valor do erro. | Função que calcula o erro do algoritmo com base na comparação entre as classes originais e previstas | 
+| perceptronAccurancy | Duas listas. Devolve um print com o valor da precisão. | Função que calcula a precisão do algoritmo com base na comparação entre as classes originais e previstas. | 
+| createGraph | Número de iterações. Não devolve nada. | Função que imprime um gráfico com os data points do dataset/população e a equação da recta com base nos pesos ajustados pelo algoritmo. | 
+| errorsGraph | Lista com valores dos erros e número de iterações. Não devolve nada. | Função que imprime o gráfico com a evolução do erro do algoritmo ao longo das iterações. | 
+| geral() | NA | Função main que integra todas as outras funções criadas. | 
+
 
 
 
