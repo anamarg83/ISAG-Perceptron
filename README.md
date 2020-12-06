@@ -13,6 +13,7 @@ O Perceptron é um classificador binário e linear, ou seja este modelo é usado
 
 #### AQUI
 
+
 Fonte da Imagem: http://www.statistics4u.com/fundstat_eng/cc_classif_calib.html
 
 Apesar de ser um algoritmo simples, o Perceptron não é um algoritmo "fraco" pois quando combinado com outros algoritmos ou mesmo quando usado num contexto de separação linear dos dados, este é pode apresentar altos graus de precisão. 
@@ -28,7 +29,7 @@ A regra para calcular o resultado final pressupõe o conhecimento de dois parâm
 #### AQUI
 O cálculo consiste numa soma ponderada de um produto escalar entre os inputs (x1, x2, x3 ...) e os respectivos pesos (w1, w2, w3 ...). Por sua vez, o resultado deste cálculo (x1*w1 + x2*w2 + x3*w3 ...) é usado para classificar cada observação como 0 ou 1 em comparação com um valor limiar (threshold/bias). 
 
-Se x1*w1 + x2*w2 + x3*w3 ... >= bias então classificamos como classe = 1, se esta condição não se verificar ou seja x1*w1 + x2*w2 + x3*w3 ... < bias então classificamos como classe = 0. 
+Se ```x1*w1 + x2*w2 + x3*w3 ... >= bias``` então classificamos como ```classe = 1```, se esta condição não se verificar ou seja ```x1*w1 + x2*w2 + x3*w3 ... < bias``` então classificamos como ```classe = 0```. 
 
 Após o algoritmo prever a sua classificação, os pesos iniciais devem ser ajustados consoante a classe seja igual ou não à original. 
 
@@ -54,7 +55,7 @@ Para a implementação deste algoritmo foram criadas as seguintes funções auxi
 | perceptronAccurancy | Duas listas. Devolve um print com o valor da precisão. | Função que calcula a precisão do algoritmo com base na comparação entre as classes originais e previstas. | 
 | createGraph | Número de iterações. Não devolve nada. | Função que imprime um gráfico com os data points do dataset/população e a equação da recta com base nos pesos ajustados pelo algoritmo. | 
 | errorsGraph | Lista com valores dos erros e número de iterações. Não devolve nada. | Função que imprime o gráfico com a evolução do erro do algoritmo ao longo das iterações. | 
-| geral() | NA | Função main que integra todas as outras funções criadas. | 
+| geral | NA | Função main que integra todas as outras funções criadas. | 
 
 
 
