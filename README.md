@@ -37,6 +37,7 @@ Após o algoritmo prever a sua classificação, os pesos iniciais devem ser ajus
 
 # How to install? 
 > $ git clone https://github.com/anamarg83/ISAG-Perceptron.git
+
 > $ cd ISAG-Perceptron
 
 # Main Functions 
