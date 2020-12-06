@@ -11,7 +11,6 @@ O modelo Perceptron surgiu entre 1950 e 1960 e apesar de hoje em dia não ser co
 
 O Perceptron é um classificador binário e linear, ou seja este modelo é usado para lidar com problemas de classificação cujo o dataset permita uma separação linear dos dados. 
 
-#### AQUI
 ![alt text](http://www.statistics4u.com/fundstat_eng/img/hl_classif_separation.png)
 
 Fonte da Imagem: http://www.statistics4u.com/fundstat_eng/cc_classif_calib.html
