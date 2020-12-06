@@ -34,4 +34,3 @@ A regra para calcular o resultado final pressupõe o conhecimento de dois parâm
 # Functions 
 
 
-
