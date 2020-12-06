@@ -77,10 +77,9 @@ Para correr o Perceptron basta chamar a função geral e interagir com o algorit
 
 **Step 3: Gráficos com com as observações do dataset, em que o primeiro tem a recta com os pesos iniciais (ou seja antes do algoritmo) e o segundo gráfico representa a recta com os pesos finais a que o algoritmo chegou com as iterações definidas ou um valor mínimo de erro.**
 
-![alt text](https://raw.githubusercontent.com/anamarg83/ISAG-Perceptron/main/README_IMAGES/acc_and_errors.PNG)
+![alt text](https://raw.githubusercontent.com/anamarg83/ISAG-Perceptron/main/README_IMAGES/graphs.PNG)
 
 **Step 4: Por fim, apresenta-se o resultado da precisão do algoritmo assim como um gráfico com a representação da evolução do erro ao longo do processo de ajustamento de pesos (espera-se que tenda para 0).**
 
-![alt text](https://raw.githubusercontent.com/anamarg83/ISAG-Perceptron/main/README_IMAGES/graphs.PNG)
-
+![alt text](https://raw.githubusercontent.com/anamarg83/ISAG-Perceptron/main/README_IMAGES/acc_and_errors.PNG)
 
