@@ -33,8 +33,12 @@ Se ```x1*w1 + x2*w2 + x3*w3 ... >= bias``` então classificamos como ```classe =
 
 Após o algoritmo prever a sua classificação, os pesos iniciais devem ser ajustados consoante a classe seja igual ou não à original. 
 
-# Our Implementation
-
+# Our Implementation - The Assumptions 
+* A nossa implementação do algoritmo Perceptron contém a criação de um dataset gerado aleatoriamente cujo o utilizador não consegue alterar, o mesmo acontece para os valores dos pesos e classes finais. 
+* A learning rate do Perceptron foi pré definida com o valor de 0.05.
+* O modelo a cada iteração percorre todos os elementos do dataset e ajusta os pesos sempre que cada indivíduo é mal classificado pelo modelo. 
+* O cálculo do erro é calculado no fim de cada iteração através do produto entre a learning rate e a diferença entre as classes previstas e originais. 
+* A única limitação da nossa implementação é que apenas consegue representar o gráfico dos dados e da função linear nos casos de datasets com apenas 2 variáveis/inputs. 
 
 # How to install? 
 > $ git clone https://github.com/anamarg83/ISAG-Perceptron.git
