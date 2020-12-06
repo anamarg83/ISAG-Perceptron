@@ -13,7 +13,7 @@ O Perceptron é um classificador binário e linear, ou seja este modelo é usado
 
 ![alt text](http://www.statistics4u.com/fundstat_eng/img/hl_classif_separation.png)
 
-Fonte da Imagem: http://www.statistics4u.com/fundstat_eng/cc_classif_calib.html
+```Fonte da Imagem: http://www.statistics4u.com/fundstat_eng/cc_classif_calib.html```
 
 Apesar de ser um algoritmo simples, o Perceptron não é um algoritmo "fraco" pois quando combinado com outros algoritmos ou mesmo quando usado num contexto de separação linear dos dados, este é pode apresentar altos graus de precisão. 
 
@@ -25,7 +25,11 @@ A regra para calcular o resultado final pressupõe o conhecimento de dois parâm
 * Pesos associados aos vários inputs (w1, w2, w3 ...)
 * Valor constante de threshold (bias)
 
-#### AQUI
+![alt text](https://miro.medium.com/max/645/0*LJBO8UbtzK_SKMog)
+
+```Fonte da imagem: https://towardsdatascience.com/what-is-a-perceptron-210a50190c3b```
+
+
 O cálculo consiste numa soma ponderada de um produto escalar entre os inputs (x1, x2, x3 ...) e os respectivos pesos (w1, w2, w3 ...). Por sua vez, o resultado deste cálculo (x1*w1 + x2*w2 + x3*w3 ...) é usado para classificar cada observação como 0 ou 1 em comparação com um valor limiar (threshold/bias). 
 
 Se ```x1*w1 + x2*w2 + x3*w3 ... >= bias``` então classificamos como ```classe = 1```, se esta condição não se verificar ou seja ```x1*w1 + x2*w2 + x3*w3 ... < bias``` então classificamos como ```classe = 0```. 
