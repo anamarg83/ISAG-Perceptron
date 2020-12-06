@@ -41,9 +41,10 @@ Após o algoritmo prever a sua classificação, os pesos iniciais devem ser ajus
 
 # Main Functions 
 Para a implementação deste algoritmo foram criadas as seguintes funções auxiliares:
-| Command | Description |
-| --- | --- |
-| git status | List all new or modified files |
-| git diff | Show file differences that haven't been staged |
+| Function | Arguments & Return Values | Description |
+| --- | --- | --- |
+| createDataset | Número de indivíduos da população e número de inputs/variáveis a considerar. Devolve uma lista de listas. | Função que gera aleatoriamente valores decimais entre 0 e o número de indivíduos. |
+| createClasses | Número de indivíduos da população. Devolve uma lista. | Função que gera as classes da população. Valores aleatórios entre 0 e 1. |
+
 
 
